@@ -98,3 +98,39 @@
     });
 </script>
 ```
+
+## 双向绑定
+双向绑定使用v-model，将input、select等等与data中的数据绑定起来，这样修改了这些输入区的数据，data中的数据也会改变
+。ps：下拉框所选值没有option时会变成未选中状态
+```html
+<div id="app">
+    输入的文本：<input v-model="message" type="text">{{message}}
+    <textarea v-model="message"></textarea>
+    <input type="radio" name="sex" value="男" v-model="cp">男
+    <input type="radio" name="sex" value="女" v-model="cp">女
+
+    <p>选中了谁：{{cp}}</p>
+
+    <p>下拉框</p>
+    <select v-model="selected">
+        <option>a</option>
+        <option>b</option>
+        <option>c</option>
+    </select>
+    <p>下拉框选中了{{selected}}</p>
+</div>
+
+<!--导入vue.js-->
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<script>
+    var vm = new Vue({
+        el:"#app",
+        // model层 数据
+        data:{
+            message:"cpcppc",
+            cp:"",
+            selected:""
+        }
+    });
+</script>
+```
