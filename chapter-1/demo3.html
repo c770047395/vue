@@ -7,8 +7,7 @@
 <body>
 <!--view层 模板-->
 <div id="app">
-    <span v-bind:title="message"> hhhhhh</span>
-
+    <li v-for="item in items">{{item.message}}</li>
 </div>
 
 <!--导入vue.js-->
@@ -18,7 +17,11 @@
         el:"#app",
         // model层 数据
         data:{
-            message:"hello,vue"
+            items:[
+                {message:'cpcp'},
+                {message:'apap'},
+                {message:'howhow'}
+            ]
         }
     });
 </script>

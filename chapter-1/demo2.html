@@ -7,8 +7,9 @@
 <body>
 <!--view层 模板-->
 <div id="app">
-    <span v-bind:title="message"> hhhhhh</span>
-
+    <h1 v-if="type==='A'">A</h1>
+    <h1 v-else-if="type==='B'">B</h1>
+    <h1 v-else>C</h1>
 </div>
 
 <!--导入vue.js-->
@@ -18,7 +19,7 @@
         el:"#app",
         // model层 数据
         data:{
-            message:"hello,vue"
+            type: 'A'
         }
     });
 </script>
