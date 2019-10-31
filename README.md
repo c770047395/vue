@@ -202,3 +202,46 @@ var vm = new Vue({
     }
 })
 ```
+
+## 计算属性
+计算属性与data，methods同级，使用computed标识，与methods中的方法写法相似
+```javascript
+computed:{//计算属性,不能与methods中的方法重名，重名后会优先调用methods中的方法
+    currentTime2:function () {
+        this.message;//当属性发生变化时，会重新计算，否则不变
+        return Date.now();//返回一个时间戳
+    }
+}
+```
+值得注意的是，计算属性是作为一个属性存在的，而不是方法，所以我们调用的时候可以直接使用``{{currentTime2}}``访问这个属性
+，当计算属性内部的属性没有变化时，计算属性不会重新计算，相当于缓存，而当计算属性中的属性有变化时，则会重新计算结果
+```html
+<!--view层 模板-->
+<div id="app">
+    <p>currentTime1 {{currentTime1()}}</p>
+    <p>currentTime2 {{currentTime2}}</p>
+
+</div>
+
+<!--导入vue.js-->
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<script>
+    var vm = new Vue({
+        el:"#app",
+        data:{
+            message:"hello,cp"
+        },
+        methods:{
+            currentTime1:function () {
+                return Date.now();//返回一个时间戳
+            }
+        },
+        computed:{//计算属性,不能与methods中的方法重名，重名后会优先调用methods中的方法
+            currentTime2:function () {
+                this.message;//当属性发生变化时，会重新计算，否则不变
+                return Date.now();//返回一个时间戳
+            }
+        }
+    });
+</script>
+```
