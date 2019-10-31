@@ -245,3 +245,71 @@ computed:{//计算属性,不能与methods中的方法重名，重名后会优先
     });
 </script>
 ```
+
+## slot(插槽)
+在组件中可以留出``<slot>``做为一个组件的拓展接口，称之为插槽，可以向插槽中填入不同的内容/组件以实现各种效果
+
+1. 首先定义一个组件
+```javascript
+Vue.component("todo",{
+    template:  '<div>\
+                    <slot name="todo-title"></slot>\
+                    <ul>\
+                        <slot name="todo-items"></slot>\
+                    </ul>\
+                </div>'
+
+
+});
+```
+2. 组件的title部分和li部分就可以由外部插入
+```html
+<div id="app">
+    <todo>
+        <h1 slot="todo-title">{{todoTitle}}</h1>
+        <li slot="todo-items" v-for="item in todoItems">{{item}}</li>
+    </todo>
+</div>
+```
+
+或者在插槽部分插入其他的组件
+```html
+<div id="app">
+    <todo>
+        <todo-title slot="todo-title" :title="todoTitle"></todo-title>
+        <todo-items slot="todo-items" v-for="item in todoItems" :item="item"></todo-items>
+    </todo>
+</div>
+```
+```html
+<script>
+
+    Vue.component("todo",{
+        template:  '<div>\
+                        <slot name="todo-title"></slot>\
+                        <ul>\
+                            <slot name="todo-items"></slot>\
+                        </ul>\
+                    </div>'
+
+
+    });
+    Vue.component("todo-title",{
+        props:['title'],
+        template: '<div>{{title}}</div>'
+    })
+    Vue.component("todo-items",{
+        props:['item'],
+        template: '<li>{{item}}</li>'
+    })
+
+    var vm = new Vue({
+        el:"#app",
+        // model层 数据
+        data:{
+            todoTitle:"hello",
+            todoItems:['cpcp','linux','java']
+        }
+    });
+</script>
+```

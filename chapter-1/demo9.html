@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-for="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--view层 模板-->
+<div id="app">
+    <todo>
+<!--        <todo-title slot="todo-title" :title="todoTitle"></todo-title>-->
+        <h1 slot="todo-title">{{todoTitle}}</h1>
+<!--        <todo-items slot="todo-items" v-for="item in todoItems" :item="item"></todo-items>-->
+        <li slot="todo-items" style="color:red" v-for="item in todoItems">{{item}}</li>
+    </todo>
+</div>
+
+<!--导入vue.js-->
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<script>
+
+    Vue.component("todo",{
+        template:  '<div>\
+                        <slot name="todo-title"></slot>\
+                        <ul>\
+                            <slot name="todo-items"></slot>\
+                        </ul>\
+                    </div>'
+
+
+    });
+    Vue.component("todo-title",{
+        props:['title'],
+        template: '<div>{{title}}</div>'
+    })
+    Vue.component("todo-items",{
+        props:['item'],
+        template: '<li>{{item}}</li>'
+    })
+
+    var vm = new Vue({
+        el:"#app",
+        // model层 数据
+        data:{
+            todoTitle:"hello",
+            todoItems:['cpcp','linux','java']
+        }
+    });
+</script>
+
+</body>
+</html>
