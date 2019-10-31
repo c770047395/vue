@@ -160,3 +160,45 @@ vue中可以使用``Vue.component(name,{})``创建一个组件,组件中有prop�
     });
 </script>
 ```
+
+## vue通信问题解决
+
+### vue的生命周期
+![](https://blog.kuangstudy.com/usr/uploads/2019/10/1579484219.jpg)
+
+
+### jquery的ajax
+不推荐使用
+
+### axios
+1. 首先引入js文件
+```html
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+```
+2. 发送请求与接收响应
+```javascript
+axios.get('/vue/data.json').then(response=>(this.info=response.data));
+```
+接收的数据需要与Vue对象中data()方法绑定，属性一一对应
+```javascript
+var vm = new Vue({
+    el: '#vue',
+    data() {
+      return{
+          //请求的返回参数格式必须和json字符串一样
+          info:{
+              name:null,
+              url:null,
+              address:{
+                  city:null,
+                  street:null,
+                  country:null
+              }
+          }
+      }
+    },
+    mounted() {
+        axios.get('/vue/data.json').then(response=>(this.info=response.data));
+    }
+})
+```
