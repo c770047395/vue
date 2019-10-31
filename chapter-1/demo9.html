@@ -8,10 +8,10 @@
 <!--view层 模板-->
 <div id="app">
     <todo>
-<!--        <todo-title slot="todo-title" :title="todoTitle"></todo-title>-->
-        <h1 slot="todo-title">{{todoTitle}}</h1>
-<!--        <todo-items slot="todo-items" v-for="item in todoItems" :item="item"></todo-items>-->
-        <li slot="todo-items" style="color:red" v-for="item in todoItems">{{item}}</li>
+        <todo-title slot="todo-title" :title="todoTitle"></todo-title>
+<!--        <h1 slot="todo-title">{{todoTitle}}</h1>-->
+        <todo-items slot="todo-items" v-for="(item,index) in todoItems" :item="item" :index="index" v-on:remove="removeItems(index)"></todo-items>
+<!--        <li slot="todo-items" style="color:red" v-for="item in todoItems">{{item}}</li>-->
     </todo>
 </div>
 
@@ -34,8 +34,14 @@
         template: '<div>{{title}}</div>'
     })
     Vue.component("todo-items",{
-        props:['item'],
-        template: '<li>{{item}}</li>'
+        props:['item','index'],
+        template: '<li>{{index}}---{{item}}<button @click="remove">删除</button></li>',
+        methods:{
+            remove: function(index){
+                this.$emit('remove',index);
+            }
+        },
+
     })
 
     var vm = new Vue({
@@ -44,6 +50,12 @@
         data:{
             todoTitle:"hello",
             todoItems:['cpcp','linux','java']
+        },
+        methods: {
+            removeItems: function(index){
+                console.log("删除了"+this.todoItems[index])
+                this.todoItems.splice(index,1);//一次删除一个元素
+            }
         }
     });
 </script>

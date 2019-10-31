@@ -313,3 +313,92 @@ Vue.component("todo",{
     });
 </script>
 ```
+
+## 自定义事件
+如果在组件中想要操作vue对象中的data需要如下步骤：
+1. 在vue对象中定义方法(只有vue对象中的方法才能访问vue的属性)
+```javascript
+methods: {
+    removeItems: function(index){
+        console.log("删除了"+this.todoItems[index])
+        this.todoItems.splice(index,1);//一次删除一个元素
+    }
+}
+```
+2. 将需要操作数据的组件添加一个自定义事件(使用v-on:)
+```javascript
+<todo-items slot="todo-items" v-for="(item,index) in todoItems" :item="item" :index="index" v-on:remove="removeItems(index)"></todo-items>
+
+```
+3. 在组件内通过this.$emit('自定义事件名',参数)接收事件并绑定当前组件内的方法
+```javascript
+methods:{
+    remove: function(index){
+        this.$emit('remove',index);
+    }
+},
+```
+4. 组件内按钮绑定这个方法
+```html
+<button @click="remove">删除</button>
+```
+这样就完成了一个自定义事件
+
+实例：
+```html
+<!--view层 模板-->
+<div id="app">
+    <todo>
+        <todo-title slot="todo-title" :title="todoTitle"></todo-title>
+<!--        <h1 slot="todo-title">{{todoTitle}}</h1>-->
+        <todo-items slot="todo-items" v-for="(item,index) in todoItems" :item="item" :index="index" v-on:remove="removeItems(index)"></todo-items>
+<!--        <li slot="todo-items" style="color:red" v-for="item in todoItems">{{item}}</li>-->
+    </todo>
+</div>
+
+<!--导入vue.js-->
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<script>
+
+    Vue.component("todo",{
+        template:  '<div>\
+                        <slot name="todo-title"></slot>\
+                        <ul>\
+                            <slot name="todo-items"></slot>\
+                        </ul>\
+                    </div>'
+
+
+    });
+    Vue.component("todo-title",{
+        props:['title'],
+        template: '<div>{{title}}</div>'
+    })
+    Vue.component("todo-items",{
+        props:['item','index'],
+        template: '<li>{{index}}---{{item}}<button @click="remove">删除</button></li>',
+        methods:{
+            remove: function(index){
+                this.$emit('remove',index);
+            }
+        },
+
+    })
+
+    var vm = new Vue({
+        el:"#app",
+        // model层 数据
+        data:{
+            todoTitle:"hello",
+            todoItems:['cpcp','linux','java']
+        },
+        methods: {
+            removeItems: function(index){
+                console.log("删除了"+this.todoItems[index])
+                this.todoItems.splice(index,1);//一次删除一个元素
+            }
+        }
+    });
+</script>
+
+```
