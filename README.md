@@ -134,3 +134,29 @@
     });
 </script>
 ```
+
+## component(组件)
+vue中可以使用``Vue.component(name,{})``创建一个组件,组件中有prop字段用来绑定来自其他地方的参数
+```html
+<div id="app">
+<cp v-for="item in items" v-bind:cp="item"></cp>
+</div>
+
+<!--导入vue.js-->
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<script>
+    ///定义一个vue组件component
+    Vue.component("cp",{
+        props:['cp'],
+        template: '<li>{{cp}}</li>'
+    });
+
+    var vm = new Vue({
+        el:"#app",
+        // model层 数据
+        data:{
+            items:["Java","Linux","前端"]
+        }
+    });
+</script>
+```
